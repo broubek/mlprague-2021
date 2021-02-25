@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
+import plotly.express as px
 
 # Apply the default theme
 sns.set_theme()
@@ -156,14 +156,9 @@ def plot_pdf(params: Dict[Text, Any], type: int = 0):
   plt.show()
 
 
-def plot_regret(values, params: Dict[Text, Any]):
-  plt.figure(figsize=(10, 7))
-
-  plt.plot(values, label='regret')
-
-  plt.xlim(0)
-  plt.ylim(0)
-  plt.title(f'Regret of {params["algorithm"]} on MovieLens environment')
-  plt.xlabel('Number of Iterations')
-  plt.ylabel('Average Regret')
-  plt.show()
+def plot_regret(values: list, params: dict):
+  history = pd.DataFrame(values, columns=['Average regret']).reset_index()
+  history = history.rename(columns={'index': 'Number of iterations'})
+  fig = px.line(history, x='Number of iterations', y='Average regret', 
+                title=f'Regret of {params["algorithm"]} on MovieLens environment')
+  fig.show()
